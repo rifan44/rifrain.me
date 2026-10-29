@@ -11,3 +11,15 @@ Interactive Laravel portfolio presented as a small 2D platformer. The CMS stores
 5. CMS write endpoints are under `/admin/skills`, `/admin/projects`, and `/admin/experiences`. Add the application's authentication middleware before exposing these routes publicly.
 
 Sprite URLs are deliberately remote and minimal for the scaffold. For production, download approved sprite assets into `public/assets` and update the `loadSprite` URLs to avoid third-party availability and privacy concerns.
+
+### Fixing an invalid APP_KEY in an existing Laragon checkout
+
+Run these commands once in PowerShell from the user's actual checkout. They replace only the invalid key, clear Laravel's cached configuration, and do not touch migrations or application data:
+
+```powershell
+Set-Location C:\laragon\www\Rifrain.me
+php artisan key:generate --force
+php artisan config:clear
+```
+
+Do not set `APP_KEY` to a placeholder such as `base64:...`; `key:generate` writes a complete valid key. If `APP_CIPHER` exists in `.env`, use `APP_CIPHER=AES-256-CBC` or remove the line so Laravel uses its default. Then reload `http://localhost` (or the Laragon virtual-host URL).
